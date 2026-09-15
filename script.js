@@ -92,18 +92,7 @@ function analyzePassword() {
             feedbackList.appendChild(li);
         });
     }
-}const generateBtn = document.getElementById("generateBtn");
-const generatedPassword = document.getElementById("generatedPassword");
-
-generateBtn.addEventListener("click", generatePassword);
-
-function secureRandomIndex(max) {
-    const randomValues = new Uint32Array(1);
-    crypto.getRandomValues(randomValues);
-    return randomValues[0] % max;
-};
-    
-    const generateBtn = document.getElementById("generateBtn");
+const generateBtn = document.getElementById("generateBtn");
 const generatedPassword = document.getElementById("generatedPassword");
 
 generateBtn.addEventListener("click", generatePassword);
@@ -115,5 +104,28 @@ function secureRandomIndex(max) {
 }
 
 function generatePassword() {
-    // ...the new generator code...
+    const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowercase = "abcdefghijklmnopqrstuvwxyz";
+    const numbers = "0123456789";
+    const symbols = "!@#$%^&*()_+-=[]{}";
+
+    const allCharacters =
+        uppercase + lowercase + numbers + symbols;
+
+    let password = "";
+
+    // Guarantee at least one character from each category
+    password += uppercase[secureRandomIndex(uppercase.length)];
+    password += lowercase[secureRandomIndex(lowercase.length)];
+    password += numbers[secureRandomIndex(numbers.length)];
+    password += symbols[secureRandomIndex(symbols.length)];
+
+    // Add additional random characters
+    for (let i = 0; i < 12; i++) {
+        password += allCharacters[
+            secureRandomIndex(allCharacters.length)
+        ];
+    }
+
+    generatedPassword.textContent = password;
 }
