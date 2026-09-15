@@ -1,9 +1,9 @@
-// Get DOM elements
-const passwordInput = document.getElementById("password");          // adjust ID if different
-const strengthDisplay = document.getElementById("strengthDisplay"); // adjust ID if different
-const feedbackList = document.getElementById("feedbackList");       // adjust ID if different
-const generateBtn = document.getElementById("generateBtn");         // adjust ID if different
-const generatedPassword = document.getElementById("generatedPassword"); // or reuse passwordInput
+// Get DOM elements (matching your actual HTML IDs)
+const passwordInput = document.getElementById("password");
+const strengthDisplay = document.getElementById("strength");
+const feedbackList = document.getElementById("feedback");
+const generateBtn = document.getElementById("generateBtn");
+const generatedPassword = document.getElementById("generatedPassword");
 
 // ========== Password Strength Checker ==========
 function checkPasswordStrength(password) {
@@ -12,7 +12,12 @@ function checkPasswordStrength(password) {
 
   if (password.length === 0) {
     strengthDisplay.textContent = "Password strength will appear here";
-    feedbackList.innerHTML = "";
+    feedbackList.innerHTML = `
+      <li>Use at least 12 characters</li>
+      <li>Include uppercase and lowercase letters</li>
+      <li>Include numbers</li>
+      <li>Include special characters</li>
+    `;
     return;
   }
 
@@ -66,11 +71,9 @@ function checkPasswordStrength(password) {
 }
 
 // Live checking while typing
-if (passwordInput) {
-  passwordInput.addEventListener("input", () => {
-    checkPasswordStrength(passwordInput.value);
-  });
-}
+passwordInput.addEventListener("input", () => {
+  checkPasswordStrength(passwordInput.value);
+});
 
 // ========== Secure Password Generator ==========
 function secureRandomIndex(max) {
@@ -100,20 +103,16 @@ function generatePassword() {
     password += allCharacters[secureRandomIndex(allCharacters.length)];
   }
 
-  // Shuffle the password so the guaranteed characters aren’t always at the front
+  // Shuffle so the guaranteed characters aren’t always first
   password = password.split("").sort(() => 0.5 - Math.random()).join("");
 
-  // Show it
-  if (generatedPassword) {
-    generatedPassword.textContent = password;
-  }
-  if (passwordInput) {
-    passwordInput.value = password;
-    checkPasswordStrength(password); // also update the strength meter
-  }
+  // Show the generated password
+  generatedPassword.textContent = password;
+
+  // Also put it in the input and update strength
+  passwordInput.value = password;
+  checkPasswordStrength(password);
 }
 
 // Button click
-if (generateBtn) {
-  generateBtn.addEventListener("click", generatePassword);
-}
+generateBtn.addEventListener("click", generatePassword);
