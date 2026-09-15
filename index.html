@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Strength Analyzer</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Strength Analyzer</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-    <div class="container">
-        <h1>🔐 Password Strength Analyzer</h1>
-
-        <p>
-            Check how strong your password is and learn how to improve it.
-        </p>
-
-        <label for="password">Enter Password</label>
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-        >
-
-        <div id="strength">Password strength will appear here</div>
-<button id="generateBtn">Generate Strong Password</button>
-
-<div id="generatedPassword"></div>
-        <ul id="feedback">
-            <li>Use at least 12 characters</li>
-            <li>Include uppercase and lowercase letters</li>
-            <li>Include numbers</li>
-            <li>Include special characters</li>
-        </ul>
+  <div class="container">
+    <div class="header">
+      <h1>🔐 Password Strength Analyzer</h1>
+      <button id="themeToggle" class="theme-btn" title="Toggle dark mode">🌙</button>
     </div>
 
-    <script src="script.js"></script>
+    <p>Check how strong your password is and learn how to improve it.</p>
 
+    <label for="password">Enter Password</label>
+    <div class="input-group">
+      <input type="password" id="password" placeholder="Enter your password" autocomplete="off">
+      <button id="toggleVisibility" class="icon-btn" title="Show/Hide password">👁️</button>
+    </div>
+
+    <div id="strength" class="strength-box">Password strength will appear here</div>
+
+    <button id="generateBtn" class="primary-btn">Generate Strong Password</button>
+
+    <div class="generated-section">
+      <div id="generatedPassword" class="generated-box"></div>
+      <button id="copyBtn" class="icon-btn" title="Copy password" style="display:none">📋</button>
+    </div>
+
+    <ul id="feedback">
+      <li>Use at least 12 characters</li>
+      <li>Include uppercase and lowercase letters</li>
+      <li>Include numbers</li>
+      <li>Include special characters</li>
+    </ul>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
