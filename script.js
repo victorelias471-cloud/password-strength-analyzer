@@ -1,14 +1,19 @@
-// Get DOM elements (matching your actual HTML IDs)
 const passwordInput = document.getElementById("password");
 const strengthDisplay = document.getElementById("strength");
 const feedbackList = document.getElementById("feedback");
 const generateBtn = document.getElementById("generateBtn");
 const generatedPassword = document.getElementById("generatedPassword");
+const copyBtn = document.getElementById("copyBtn");
+const toggleVisibility = document.getElementById("toggleVisibility");
+const themeToggle = document.getElementById("themeToggle");
 
-// ========== Password Strength Checker ==========
+// ========== Strength Checker ==========
 function checkPasswordStrength(password) {
   let score = 0;
   const feedback = [];
+
+  // Reset classes
+  strengthDisplay.className = "strength-box";
 
   if (password.length === 0) {
     strengthDisplay.textContent = "Password strength will appear here";
@@ -21,43 +26,42 @@ function checkPasswordStrength(password) {
     return;
   }
 
-  // Length
   if (password.length >= 12) score += 1;
   else feedback.push("Use at least 12 characters");
 
-  // Uppercase
   if (/[A-Z]/.test(password)) score += 1;
   else feedback.push("Include uppercase letters");
 
-  // Lowercase
   if (/[a-z]/.test(password)) score += 1;
   else feedback.push("Include lowercase letters");
 
-  // Numbers
   if (/[0-9]/.test(password)) score += 1;
   else feedback.push("Include numbers");
 
-  // Symbols
   if (/[!@#$%^&*()_+\-=\[\]{}]/.test(password)) score += 1;
   else feedback.push("Include special characters");
 
-  // Extra points for longer passwords
   if (password.length >= 16) score += 1;
 
-  // Display strength
+  // Update strength display + color
   if (score <= 1) {
     strengthDisplay.textContent = "🔴 Very Weak";
+    strengthDisplay.classList.add("very-weak");
   } else if (score === 2) {
     strengthDisplay.textContent = "🟠 Weak";
+    strengthDisplay.classList.add("weak");
   } else if (score === 3) {
     strengthDisplay.textContent = "🟡 Moderate";
+    strengthDisplay.classList.add("moderate");
   } else if (score === 4) {
     strengthDisplay.textContent = "🟢 Strong";
+    strengthDisplay.classList.add("strong");
   } else {
     strengthDisplay.textContent = "🟢 Very Strong";
+    strengthDisplay.classList.add("very-strong");
   }
 
-  // Display feedback
+  // Update feedback
   feedbackList.innerHTML = "";
   if (feedback.length === 0) {
     feedbackList.innerHTML = "<li>Excellent! Your password meets all criteria.</li>";
@@ -70,49 +74,78 @@ function checkPasswordStrength(password) {
   }
 }
 
-// Live checking while typing
+// Live typing
 passwordInput.addEventListener("input", () => {
   checkPasswordStrength(passwordInput.value);
 });
 
-// ========== Secure Password Generator ==========
+// ========== Generator ==========
 function secureRandomIndex(max) {
-  const randomValues = new Uint32Array(1);
-  crypto.getRandomValues(randomValues);
-  return randomValues[0] % max;
+  const array = new Uint32Array(1);
+  crypto.getRandomValues(array);
+  return array[0] % max;
 }
 
 function generatePassword() {
-  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const lowercase = "abcdefghijklmnopqrstuvwxyz";
-  const numbers   = "0123456789";
-  const symbols   = "!@#$%^&*()_+-=[]{}";
-
-  const allCharacters = uppercase + lowercase + numbers + symbols;
+  const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lower = "abcdefghijklmnopqrstuvwxyz";
+  const numbers = "0123456789";
+  const symbols = "!@#$%^&*()_+-=[]{}";
+  const all = upper + lower + numbers + symbols;
 
   let password = "";
-
-  // Guarantee at least one of each type
-  password += uppercase[secureRandomIndex(uppercase.length)];
-  password += lowercase[secureRandomIndex(lowercase.length)];
+  password += upper[secureRandomIndex(upper.length)];
+  password += lower[secureRandomIndex(lower.length)];
   password += numbers[secureRandomIndex(numbers.length)];
   password += symbols[secureRandomIndex(symbols.length)];
 
-  // Add 12 more random characters (total length = 16)
   for (let i = 0; i < 12; i++) {
-    password += allCharacters[secureRandomIndex(allCharacters.length)];
+    password += all[secureRandomIndex(all.length)];
   }
 
-  // Shuffle so the guaranteed characters aren’t always first
+  // Shuffle
   password = password.split("").sort(() => 0.5 - Math.random()).join("");
 
-  // Show the generated password
   generatedPassword.textContent = password;
-
-  // Also put it in the input and update strength
   passwordInput.value = password;
   checkPasswordStrength(password);
+
+  // Show copy button
+  copyBtn.style.display = "block";
 }
 
-// Button click
 generateBtn.addEventListener("click", generatePassword);
+
+// ========== Copy to clipboard ==========
+copyBtn.addEventListener("click", () => {
+  const text = generatedPassword.textContent;
+  if (!text) return;
+
+  navigator.clipboard.writeText(text).then(() => {
+    copyBtn.textContent = "✅";
+    setTimeout(() => {
+      copyBtn.textContent = "📋";
+    }, 1500);
+  });
+});
+
+// ========== Show / Hide password ==========
+toggleVisibility.addEventListener("click", () => {
+  const isPassword = passwordInput.type === "password";
+  passwordInput.type = isPassword ? "text" : "password";
+  toggleVisibility.textContent = isPassword ? "🙈" : "👁️";
+});
+
+// ========== Dark mode ==========
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  themeToggle.textContent = isDark ? "☀️" : "🌙";
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+});
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
+  themeToggle.textContent = "☀️";
+}
