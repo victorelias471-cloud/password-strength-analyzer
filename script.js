@@ -97,29 +97,23 @@ const generatedPassword = document.getElementById("generatedPassword");
 
 generateBtn.addEventListener("click", generatePassword);
 
-function generatePassword() {
-    const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const lowercase = "abcdefghijklmnopqrstuvwxyz";
-    const numbers = "0123456789";
-    const symbols = "!@#$%^&*()_+-=[]{}";
+function secureRandomIndex(max) {
+    const randomValues = new Uint32Array(1);
+    crypto.getRandomValues(randomValues);
+    return randomValues[0] % max;
+};
     
-    const allCharacters =
-        uppercase + lowercase + numbers + symbols;
+    const generateBtn = document.getElementById("generateBtn");
+const generatedPassword = document.getElementById("generatedPassword");
 
-    let password = "";
+generateBtn.addEventListener("click", generatePassword);
 
-    // Guarantee a mix of character types
-    password += uppercase[Math.floor(Math.random() * uppercase.length)];
-    password += lowercase[Math.floor(Math.random() * lowercase.length)];
-    password += numbers[Math.floor(Math.random() * numbers.length)];
-    password += symbols[Math.floor(Math.random() * symbols.length)];
+function secureRandomIndex(max) {
+    const randomValues = new Uint32Array(1);
+    crypto.getRandomValues(randomValues);
+    return randomValues[0] % max;
+}
 
-    // Add additional random characters
-    for (let i = 0; i < 12; i++) {
-        password += allCharacters[
-            Math.floor(Math.random() * allCharacters.length)
-        ];
-    }
-
-    generatedPassword.textContent = password;
+function generatePassword() {
+    // ...the new generator code...
 }
