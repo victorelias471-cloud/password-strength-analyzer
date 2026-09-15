@@ -205,3 +205,34 @@ body.dark .strength-box.very-strong { background: #065f46; color: #a7f3d0; }
 #feedback li {
   margin-bottom: 4px;
 }
+.security-info {
+  margin-top: 25px;
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.security-info h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.security-info h3 {
+  margin-top: 18px;
+  margin-bottom: 6px;
+  font-size: 17px;
+}
+
+.security-info p {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.security-note {
+  margin-top: 20px;
+  padding: 15px;
+  background: #eef2ff;
+  border-radius: 10px;
+  line-height: 1.6;
+}
