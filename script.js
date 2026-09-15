@@ -92,4 +92,34 @@ function analyzePassword() {
             feedbackList.appendChild(li);
         });
     }
+}const generateBtn = document.getElementById("generateBtn");
+const generatedPassword = document.getElementById("generatedPassword");
+
+generateBtn.addEventListener("click", generatePassword);
+
+function generatePassword() {
+    const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowercase = "abcdefghijklmnopqrstuvwxyz";
+    const numbers = "0123456789";
+    const symbols = "!@#$%^&*()_+-=[]{}";
+    
+    const allCharacters =
+        uppercase + lowercase + numbers + symbols;
+
+    let password = "";
+
+    // Guarantee a mix of character types
+    password += uppercase[Math.floor(Math.random() * uppercase.length)];
+    password += lowercase[Math.floor(Math.random() * lowercase.length)];
+    password += numbers[Math.floor(Math.random() * numbers.length)];
+    password += symbols[Math.floor(Math.random() * symbols.length)];
+
+    // Add additional random characters
+    for (let i = 0; i < 12; i++) {
+        password += allCharacters[
+            Math.floor(Math.random() * allCharacters.length)
+        ];
+    }
+
+    generatedPassword.textContent = password;
 }
